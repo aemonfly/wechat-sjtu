@@ -28,7 +28,7 @@ function haversineGreatCircleDistance(
 }
 
 function nearestStation($x, $y) {
-  $distances = array(
+  $positions = array(
     "研究生服务中心 " => array(31.03013,121.42846),
     "图书信息楼 " => array(31.02738,121.43274),
     "东中院 " => array(31.02581,121.43330),
@@ -48,13 +48,12 @@ function nearestStation($x, $y) {
     "菁菁堂广场" => array(31.02056,121.42574),
     "校医院" => array(31.02139,121.42862)
   );
-  foreach ($distances as $key => $value) {
-    $distances[$key] = haversineGreatCircleDistance($x, $y, 
+  foreach ($positions as $key => $value) {
+    $positions[$key] = haversineGreatCircleDistance($x, $y, 
       $value[0], $value[1]);
   }
-  $m = min(array_values($distances));
-  $station = array_search($m, $distances);
-  return "猜离你最近的车站是${station}";
+  $station = array_search( min(array_values($positions)), $positions);
+  return "猜离你最近的车站是: ${station}";
 }
 
 ?>

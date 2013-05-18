@@ -91,8 +91,8 @@ if ($msg) {
 		case "xl": 
 			$title="校历";
 			$description="2012-2013";
-			$imageurl="http://edfward.com/~lx/static/198109_1.jpg";
-			$clickurl="http://edfward.com/~lx/static/198109_1.jpg";
+			$imageurl="http://edfward.com/~lx/static/xl.jpg";
+			$clickurl="http://edfward.com/~lx/static/xl.jpg";
 			$returnmsg = sprintf(img_template($user,$server,$time), $title, 
 				$description, $imageurl, $clickurl);
 			break;
