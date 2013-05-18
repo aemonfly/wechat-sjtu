@@ -170,8 +170,9 @@ if ($msg) {
 		fwrite($f,$logmsg);
 		fclose($f);
 		 		
-		if ($dis < 1000) { $tmp = "哥们儿，你住东26?";}
-		else {$tmp = "哥们儿你住哪儿啊？";}
+		/*if ($dis < 1000) { $tmp = "哥们儿，你住东26?";}
+		else {$tmp = "哥们儿你住哪儿啊？";}*/
+		$tmp = nearestStation($loc_x, $loc_y);
 		$returnmsg = sprintf(txt_template($user,$server,$time), $tmp);	
 		break;
 
