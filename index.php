@@ -6,6 +6,36 @@ require("/home/lx/public_html/func_lib/get_music.php");
 require("/home/lx/public_html/func_lib/get_bus.php");
 require("/home/lx/public_html/func_lib/location.php");
 
+function img_template($user,$server,$time) {
+	return "<xml>
+			<ToUserName><![CDATA[$user]]></ToUserName>
+			<FromUserName><![CDATA[$server]]></FromUserName>
+			<CreateTime>$time</CreateTime>
+			<MsgType><![CDATA[news]]></MsgType>
+			<ArticleCount>1</ArticleCount>
+			<Articles>
+			<item>
+			<Title><![CDATA[%s]]></Title> 
+			<Description><![CDATA[%s]]></Description>
+			<PicUrl><![CDATA[%s]]></PicUrl>
+			<Url><![CDATA[%s]]></Url>
+			</item>
+			</Articles>
+			<FuncFlag>1</FuncFlag>
+			</xml> ";
+}
+
+function txt_template($user,$server,$time) {
+	return "<xml>
+			<ToUserName><![CDATA[$user]]></ToUserName>
+			<FromUserName><![CDATA[$server]]></FromUserName>
+			<CreateTime>$time</CreateTime>
+			<MsgType><![CDATA[text]]></MsgType>
+			<Content><![CDATA[$s$err]]></Content>
+			<FuncFlag>0</FuncFlag>
+			</xml>";
+}
+
 function checkSignature() 
 { 
 	$signature = $_GET["signature"]; 
@@ -25,6 +55,7 @@ function checkSignature()
 }
 
 $msg = $HTTP_RAW_POST_DATA;
+
 if ($msg) {
 	checkSignature() or die("not from wechat!");
 	/*$f = fopen('/home/lx/public_html/tmp.txt','w') or die("DIE!");
@@ -48,50 +79,22 @@ if ($msg) {
 		$keyword=strtolower($keyword);
 
 		switch($target){
-		case "t":
+		case "t": // twitter msg
 			$s=twitter_Search($keyword,6);
 			if($s==null) {$err="无法找到您要搜索的内容";}
-			$returnmsg = "<xml>
-			<ToUserName><![CDATA[$user]]></ToUserName>
-			<FromUserName><![CDATA[$server]]></FromUserName>
-			<CreateTime>$time</CreateTime>
-			<MsgType><![CDATA[text]]></MsgType>
-			<Content><![CDATA[$s$err]]></Content>
-			<FuncFlag>0</FuncFlag>
-			</xml>";
-			break;//twitter
+			$returnmsg = sprintf(txt_template($user,$server,$time), $s.$err);
+			break;
 		case "n": 
 			$tmp=get_notice(6); 
-			$returnmsg = "<xml>
-				<ToUserName><![CDATA[$user]]></ToUserName>
-				<FromUserName><![CDATA[$server]]></FromUserName>
-				<CreateTime>$time</CreateTime>
-				<MsgType><![CDATA[text]]></MsgType>
-				<Content><![CDATA[$tmp]]></Content>
-				<FuncFlag>0</FuncFlag>
-				</xml>"; 
+			$returnmsg = sprintf(txt_template($user,$server,$time),$tmp);
 			break;
 		case "xl": 
 			$title="校历";
 			$description="2012-2013";
 			$imageurl="http://edfward.com/~lx/static/198109_1.jpg";
 			$clickurl="http://edfward.com/~lx/static/198109_1.jpg";
-			$returnmsg ="<xml>
-				<ToUserName><![CDATA[$user]]></ToUserName>
-				<FromUserName><![CDATA[$server]]></FromUserName>
-				<CreateTime>$time</CreateTime>
-				<MsgType><![CDATA[news]]></MsgType>
-				<ArticleCount>1</ArticleCount>
-				<Articles>
-				<item>
-				<Title><![CDATA[$title]]></Title> 
-				<Description><![CDATA[$description]]></Description>
-				<PicUrl><![CDATA[$imageurl]]></PicUrl>
-				<Url><![CDATA[$clickurl]]></Url>
-				</item>
-				</Articles>
-				<FuncFlag>1</FuncFlag>
-				</xml> ";
+			$returnmsg = sprintf(img_template($user,$server,$time), $title, 
+				$description, $imageurl, $clickurl);
 			break;
 		case "m":
 			$keyword=urldecode($keyword);
@@ -105,14 +108,8 @@ if ($msg) {
 			$music_url=$j->url;
 
 			if($music_url==null) {
-				$returnmsg="<xml>
-					<ToUserName><![CDATA[$user]]></ToUserName>
-					<FromUserName><![CDATA[$server]]></FromUserName>
-					<CreateTime>$time</CreateTime>
-					<MsgType><![CDATA[text]]></MsgType>
-					<Content><![CDATA[无法找到音乐]]></Content>
-					<FuncFlag>0</FuncFlag>
-					</xml>";}
+				$returnmsg = sprintf(txt_template($user,$server,$time),"无法找到音乐");
+			}
 			else{
 				$returnmsg="<xml>
 					<ToUserName><![CDATA[$user]]></ToUserName>
@@ -132,24 +129,12 @@ if ($msg) {
 		case "xc": 
 			$keyword=urldecode($keyword);
 			if ($keyword == "map") { // return image
+				$title="校车路线";
+				$description="交大校园巴士路线图";
 				$imageurl="http://edfward.com/~lx/static/bus_map.jpg";
 				$clickurl="http://edfward.com/~lx/static/bus_map.jpg";
-				$returnmsg ="<xml>
-					<ToUserName><![CDATA[$user]]></ToUserName>
-					<FromUserName><![CDATA[$server]]></FromUserName>
-					<CreateTime>$time</CreateTime>
-					<MsgType><![CDATA[news]]></MsgType>
-					<ArticleCount>1</ArticleCount>
-					<Articles>
-					<item>
-					<Title><![CDATA[$title]]></Title> 
-					<Description><![CDATA[$description]]></Description>
-					<PicUrl><![CDATA[$imageurl]]></PicUrl>
-					<Url><![CDATA[$clickurl]]></Url>
-					</item>
-					</Articles>
-					<FuncFlag>1</FuncFlag>
-					</xml> ";
+				$returnmsg = sprintf(img_template($user,$server,$time), $title, 
+					$description, $imageurl, $clickurl);
 				break;
 			}
 
@@ -163,25 +148,11 @@ if ($msg) {
 			{
 				$tmp=get_bus("all");
 			}
-			$returnmsg = "<xml>
-				<ToUserName><![CDATA[$user]]></ToUserName>
-				<FromUserName><![CDATA[$server]]></FromUserName>
-				<CreateTime>$time</CreateTime>
-				<MsgType><![CDATA[text]]></MsgType>
-				<Content><![CDATA[$tmp]]></Content>
-				<FuncFlag>0</FuncFlag>
-				</xml>"; 
+			$returnmsg = sprintf(txt_template($user,$server,$time), $tmp);
 			break;
 		case "to complete": break;
 		default:
-			$returnmsg = "<xml>
-				<ToUserName><![CDATA[$user]]></ToUserName>
-				<FromUserName><![CDATA[$server]]></FromUserName>
-				<CreateTime>$time</CreateTime>
-				<MsgType><![CDATA[text]]></MsgType>
-				<Content><![CDATA[$instructions]]></Content>
-				<FuncFlag>0</FuncFlag>
-				</xml>";
+			$returnmsg = sprintf(txt_template($user,$server,$time), $instructions);
 		}
 		break;
 
@@ -201,14 +172,7 @@ if ($msg) {
 		 		
 		if ($dis < 1000) { $tmp = "哥们儿，你住东26?";}
 		else {$tmp = "哥们儿你住哪儿啊？";}
-		$returnmsg = "<xml>
-			<ToUserName><![CDATA[$user]]></ToUserName>
-			<FromUserName><![CDATA[$server]]></FromUserName>
-			<CreateTime>$time</CreateTime>
-			<MsgType><![CDATA[text]]></MsgType>
-			<Content><![CDATA[$tmp]]></Content>
-			<FuncFlag>0</FuncFlag>
-			</xml>";		
+		$returnmsg = sprintf(txt_template($user,$server,$time), $tmp);	
 		break;
 
 	case "link":break;
@@ -217,7 +181,6 @@ if ($msg) {
 
 	default : ;
 	}
-
 
 	echo $returnmsg;
 }//end msg
@@ -231,8 +194,6 @@ else {
 			";
 		echo $s;
 	}
-
 }
 
 ?>
-
