@@ -165,11 +165,11 @@ if ($msg) {
 	case "image" :break;
 
 	case "location":
-		$loc_x = $post_obj->Location_X;
-		$loc_y = $post_obj->Location_Y;
-		$d26_x = 31.03; $d26_y = 121.434;
+		$loc_x = floatval($post_obj->Location_X);
+		$loc_y = floatval($post_obj->Location_Y);
+		$d26_x = 31.029535; $d26_y = 121.429836;
 		$dis = haversineGreatCircleDistance($loc_x,$loc_y,$d26_x,$d26_y);
-		if ($dis < 100) { $tmp = "哥们儿，你住东26?";}
+		if ($dis < 1000) { $tmp = "哥们儿，你住东26?";}
 		else {$tmp = "哥们儿你住哪儿啊？";}
 		$returnmsg = "<xml>
 			<ToUserName><![CDATA[$user]]></ToUserName>
