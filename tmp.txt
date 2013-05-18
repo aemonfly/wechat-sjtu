@@ -1,0 +1,7 @@
+<xml><ToUserName><![CDATA[gh_5587118b2d95]]></ToUserName>
+<FromUserName><![CDATA[o2G7bjntVdnPusbDPTisIz74ilQw]]></FromUserName>
+<CreateTime>1368639003</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA[校车]]></Content>
+<MsgId>5878259757915047232</MsgId>
+</xml>

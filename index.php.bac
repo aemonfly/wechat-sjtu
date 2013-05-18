@@ -1,0 +1,138 @@
+<?php
+//$msg = $GLOBAL["HTTP_RAW_POST_DATA"];
+$msg = $HTTP_RAW_POST_DATA;
+if ($msg) {
+	$f = fopen('/home/lx/public_html/tmp.txt','w') or die("DIE!");
+	fwrite($f,$msg);
+	fclose($f);
+
+	$post_obj = simplexml_load_string($msg,'SimpleXMLElement', LIBXML_NOCDATA);
+	$user = $post_obj->FromUserName;
+	$server = $post_obj->ToUserName;
+	$receivemsg=$post_obj->Content;
+	$msgtype=$post_obj->MsgType;
+	$time = time();
+
+
+
+	$instructions="使用说明：\n 1.发送 \"twitter 关键词\"\n2.发送 \"notice\"获取最新校园通告\n3.待续\n";
+	switch($msgtype)
+	{
+		case "text":{ 
+
+						$arr=explode(" ",$receivemsg,2);
+						$target=strtolower($arr[0]);
+						$keyword=urlencode($arr[1]);
+						switch($target){
+
+							case "twitter":{
+											   $c = curl_init("http://search.twitter.com/search.json?q=$keyword");
+											   curl_setopt($c,CURLOPT_RETURNTRANSFER,1);
+											   $res = curl_exec($c);
+
+											   $query = json_decode($res,1);
+											   $tweets = array_slice($query["results"],0,5);
+
+											   $s = "";
+											   foreach($tweets as $i => $tweet) {
+												   $s .= "tweet ".strval($i+1).":\n".$tweet["text"]."\n--------\n";
+											   }
+											   if($s==null) {$err="无法找到您要搜索的内容";}
+											   $returnmsg = "<xml>
+												   <ToUserName><![CDATA[$user]]></ToUserName>
+												   <FromUserName><![CDATA[$server]]></FromUserName>
+												   <CreateTime>$time</CreateTime>
+												   <MsgType><![CDATA[text]]></MsgType>
+												   <Content><![CDATA[$s$err]]></Content>
+												   <FuncFlag>0</FuncFlag>
+												   </xml>";
+											   curl_close($c);
+
+
+
+
+										   }break;//twitter
+
+
+							case "notice": {
+											   $notice_url="http://www.jwc.sjtu.edu.cn/rss/rss_notice.aspx?SubjectID=198015&TemplateID=221009";
+											   $notice_xml=simplexml_load_file($notice_url,'SimpleXMLElement', LIBXML_NOCDATA);
+											   $tmp="";
+											   for($i=0;$i<5;$i++)
+											   {
+												   $tmp.="notice".strval($i+1).":\n";
+												   $tmp.= $notice_xml->channel->item[$i]->title;
+												   $tmp.="\n";
+												   $tmp.= $notice_xml->channel->item[$i]->link;
+												   $tmp.="\n------\n";
+
+											   }
+											   $returnmsg = "<xml>
+												   <ToUserName><![CDATA[$user]]></ToUserName>
+												   <FromUserName><![CDATA[$server]]></FromUserName>
+												   <CreateTime>$time</CreateTime>
+												   <MsgType><![CDATA[text]]></MsgType>
+												   <Content><![CDATA[$tmp]]></Content>
+												   <FuncFlag>0</FuncFlag>
+												   </xml>"; 
+										   }break;
+
+							case "to complete": break;
+
+							default:
+
+												$returnmsg = "<xml>
+													<ToUserName><![CDATA[$user]]></ToUserName>
+													<FromUserName><![CDATA[$server]]></FromUserName>
+													<CreateTime>$time</CreateTime>
+													<MsgType><![CDATA[text]]></MsgType>
+													<Content><![CDATA[$instructions]]></Content>
+													<FuncFlag>0</FuncFlag>
+													</xml>";
+
+						}
+
+
+
+
+					}break;
+
+		case "image" :{}break;
+
+		case "location":{}break;
+
+		case "link":{}break;
+
+		case "event" :{
+						  $returnmsg = "<xml>
+							  <ToUserName><![CDATA[$user]]></ToUserName>
+							  <FromUserName><![CDATA[$server]]></FromUserName>
+							  <CreateTime>$time</CreateTime>
+							  <MsgType><![CDATA[text]]></MsgType>
+							  <Content><![CDATA[欢迎关注交大查询助手]]></Content>
+							  <FuncFlag>0</FuncFlag>
+							  </xml>";
+
+					  }break;
+
+		default : ;
+	}
+
+
+	echo $returnmsg;
+}//end msg
+
+else {
+	$receivemsg=$_GET["query"];
+	if($receivemsg==null) {
+		$s = "
+			Nothing to show here!
+			H J J
+
+			";
+		echo $s;
+	}
+
+}
+
+?>
