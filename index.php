@@ -31,7 +31,7 @@ function txt_template($user,$server,$time) {
 			<FromUserName><![CDATA[$server]]></FromUserName>
 			<CreateTime>$time</CreateTime>
 			<MsgType><![CDATA[text]]></MsgType>
-			<Content><![CDATA[$s$err]]></Content>
+			<Content><![CDATA[%s]]></Content>
 			<FuncFlag>0</FuncFlag>
 			</xml>";
 }
