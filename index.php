@@ -4,6 +4,7 @@ require("/home/lx/public_html/func_lib/twitter_Search.php");
 require("/home/lx/public_html/func_lib/get_notice.php");
 require("/home/lx/public_html/func_lib/get_music.php");
 require("/home/lx/public_html/func_lib/get_bus.php");
+require("/home/lx/public_html/func_lib/location.php");
 
 function checkSignature() 
 { 
@@ -33,7 +34,6 @@ if ($msg) {
 	$post_obj = simplexml_load_string($msg,'SimpleXMLElement', LIBXML_NOCDATA);
 	$user = $post_obj->FromUserName;
 	$server = $post_obj->ToUserName;
-	$receivemsg=$post_obj->Content;
 	$msgtype=$post_obj->MsgType;
 	$time = time();
 
@@ -41,6 +41,7 @@ if ($msg) {
 	switch($msgtype)
 	{
 	case "text": 
+		$receivemsg=$post_obj->Content;
 		$arr=explode(" ",$receivemsg,2);
 		$target=strtolower($arr[0]);
 		$keyword=urlencode($arr[1]);
@@ -163,7 +164,22 @@ if ($msg) {
 
 	case "image" :break;
 
-	case "location":break;
+	case "location":
+		$loc_x = $post_obj->Location_X;
+		$loc_y = $post_obj->Location_Y;
+		$d26_x = 31.03; $d26_y = 121.434;
+		$dis = haversineGreatCircleDistance($loc_x,$loc_y,$d26_x,$d26_y);
+		if ($dis < 100) { $tmp = "哥们儿，你住东26?";}
+		else {$tmp = "哥们儿你住哪儿啊？";}
+		$returnmsg = "<xml>
+			<ToUserName><![CDATA[$user]]></ToUserName>
+			<FromUserName><![CDATA[$server]]></FromUserName>
+			<CreateTime>$time</CreateTime>
+			<MsgType><![CDATA[text]]></MsgType>
+			<Content><![CDATA[$tmp]]></Content>
+			<FuncFlag>0</FuncFlag>
+			</xml>";		
+		break;
 
 	case "link":break;
 
