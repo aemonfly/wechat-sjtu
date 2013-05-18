@@ -131,6 +131,29 @@ if ($msg) {
 			break;//music
 		case "xc": 
 			$keyword=urldecode($keyword);
+			if ($keyword == "map") { // return image
+				$imageurl="http://edfward.com/~lx/static/bus_map.jpg";
+				$clickurl="http://edfward.com/~lx/static/bus_map.jpg";
+				$returnmsg ="<xml>
+					<ToUserName><![CDATA[$user]]></ToUserName>
+					<FromUserName><![CDATA[$server]]></FromUserName>
+					<CreateTime>$time</CreateTime>
+					<MsgType><![CDATA[news]]></MsgType>
+					<ArticleCount>1</ArticleCount>
+					<Articles>
+					<item>
+					<Title><![CDATA[$title]]></Title> 
+					<Description><![CDATA[$description]]></Description>
+					<PicUrl><![CDATA[$imageurl]]></PicUrl>
+					<Url><![CDATA[$clickurl]]></Url>
+					</item>
+					</Articles>
+					<FuncFlag>1</FuncFlag>
+					</xml> ";
+				break;
+			}
+
+			// return text
 			if($keyword==null){
 				$tmp=get_bus($time);
 				if((date('w',$time)==6)||(date('w',$time)==7)) 
