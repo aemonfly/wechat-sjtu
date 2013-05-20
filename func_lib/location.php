@@ -48,19 +48,12 @@ function nearestStation($x, $y) {
     "菁菁堂广场" => array(31.02056,121.42574),
     "校医院" => array(31.02139,121.42862)
   );
-  $m_val = 100000;
-  $m_station = "";
+
   foreach ($positions as $key => $value) {
-    $d = haversineGreatCircleDistance($x, $y, 
+    $positions[$key] = haversineGreatCircleDistance($x, $y, 
       $value[0], $value[1]);
-    if ($d < $m_val) {
-        $m_val = $d;
-        $m_station = $key;
-    }
   }
 
-
-  
   asort($positions);
   $Nearest_K_Stop='';
   $k=3;
