@@ -163,17 +163,8 @@ if ($msg) {
 		$loc_y = floatval($post_obj->Location_Y);
 		$d26_x = 31.029505; $d26_y = 121.429849;
 		$dis = haversineGreatCircleDistance($loc_x,$loc_y,$d26_x,$d26_y);
-		
-		// log for debugging
-		$logmsg = strval($loc_x)."\t".strval($loc_y)."\t".strval($dis)."\n";
-		$f = fopen('/home/lx/public_html/tmp.txt','a') or die("DIE!");
-		fwrite($f,$logmsg);
-		fclose($f);
-		 		
-		/*if ($dis < 1000) { $tmp = "哥们儿，你住东26?";}
-		else {$tmp = "哥们儿你住哪儿啊？";}*/
 		$tmp = nearestStation($loc_x, $loc_y);
-		$returnmsg = sprintf(txt_template($user,$server,$time), $tmp);	
+		$returnmsg = sprintf(txt_template($user,$server,$time), $tmp);
 		break;
 
 	case "link":break;
