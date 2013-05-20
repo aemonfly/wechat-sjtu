@@ -29,7 +29,7 @@ for($i=0;$i<count($timetable1)-1;$i++)
 }
 
 if($i==count($timetable1)-1)
-	$msg= "没车了！";
+	$msg= "今天没车了！";
 
 $msg.="\n----\n顺时针:\n";
 

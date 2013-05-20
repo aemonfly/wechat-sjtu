@@ -58,8 +58,17 @@ function nearestStation($x, $y) {
         $m_station = $key;
     }
   }
-  # $station = array_search( min(array_values($positions)), $positions);
-  return "猜离你最近的车站是: ${m_station}";
+
+
+  
+  asort($positions);
+  $Nearest_K_Stop='';
+  $k=4;
+  for ($i=0;$i<$k-1;$i++){ 
+   $Nearest_K_Stop.=array_search(array_values($positions)[$i],$positions).'\n';
+  }
+
+  return "你附近的车站有:\n ${Nearest_K_Stop}";
 }
 
 ?>
