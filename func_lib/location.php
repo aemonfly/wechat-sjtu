@@ -63,8 +63,8 @@ function nearestStation($x, $y) {
   
   asort($positions);
   $Nearest_K_Stop='';
-  $k=4;
-  for ($i=0;$i<$k-1;$i++){ 
+  $k=3;
+  for ($i=0;$i<$k;$i++){ 
    $Nearest_K_Stop.=array_search(array_values($positions)[$i],$positions).'\n';
   }
 
