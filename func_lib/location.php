@@ -48,9 +48,10 @@ function nearestStation($x, $y) {
 			"菁菁堂广场" => array(31.02056,121.42574),
 			"校医院" => array(31.02139,121.42862)
 			);
-
+	static $offset_x = 0.002034666666666851;
+	static $offset_y = -0.004671000000001868;
 	foreach ($positions as $key => $value) {
-		$positions[$key] = haversineGreatCircleDistance($x, $y, 
+		$positions[$key] = haversineGreatCircleDistance($x+$offset_x, $y+$offset_y, 
 				$value[0], $value[1]);
 	}
 
