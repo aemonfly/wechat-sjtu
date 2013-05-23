@@ -50,7 +50,6 @@ function nearestStation($x, $y,$time_array) {
 			"校医院" => array(31.02139,121.42862,21,1)
 
 			);
-	$p=$positions;
 	static $offset_x = 0.002034666666666851;
 	static $offset_y = -0.004671000000001868;
 	foreach ($positions as $key => $value) {
@@ -58,17 +57,12 @@ function nearestStation($x, $y,$time_array) {
 				$value[0], $value[1]);
 	}
 
+	$p=$positions;
 	asort($positions);
 	$Nearest_K_Stop='';
 	$k=3;
-	/*	$nearest_distance = array_values($positions);
-		for ($i=0;$i<$k;$i++){ 
-		$Nearest_K_Stop .= (array_search($nearest_distance[$i],$positions)."\n");
-		}
 
-	 */
-
-	if($time_array[1]==-1){
+	if($time_array[1]==-1) {
 		foreach (array_slice($positions,0,$k) as $key => $v){
 			{
 				$Nearest_K_Stop.=$key."\n(逆)".(date('G:i',($time_array[0]+($p[$key][3])*60)))."\n";
@@ -77,16 +71,16 @@ function nearestStation($x, $y,$time_array) {
 		$Nearest_K_Stop.="\n顺时针没车了。";
 	}
 
-	else{
-		foreach (array_slice($positions,0,$k) as $key => $v){
+	else {
+		foreach (array_slice($positions,0,$k) as $key => $v) {
 			{
-				$Nearest_K_Stop.=$key."\n(顺)".(date('G:i',($time_array[1]+($p[$key][2])*60)))
-					."\n(逆)".(date('G:i',($time_array[0]+($p[$key][3])*60)))."\n";
+				$Nearest_K_Stop .= $key."\n(顺)".(date('G:i',($time_array[1]+($p[$key][2])*60)))
+														."\n(逆)".(date('G:i',($time_array[0]+($p[$key][3])*60)))."\n";
 			}
 		}
 
 	}
-return "你附近的车站及其下一班预计到达时间:\n ${Nearest_K_Stop}";
+	return "你附近的车站及其下一班预计到达时间:\n ${Nearest_K_Stop}";
 }
 
 ?>
