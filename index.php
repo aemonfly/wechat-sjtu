@@ -163,7 +163,7 @@ if ($msg) {
 		$loc_y = floatval($post_obj->Location_Y);
 		$d26_x = 31.029505; $d26_y = 121.429849;
 		$dis = haversineGreatCircleDistance($loc_x,$loc_y,$d26_x,$d26_y);
-		$tmp = nearestStation($loc_x, $loc_y);
+		$tmp = nearestStation($loc_x, $loc_y,get_bus_for_location($time));
 		$returnmsg = sprintf(txt_template($user,$server,$time), $tmp);
 		break;
 
