@@ -68,7 +68,7 @@ if ($msg) {
 	$msgtype=$post_obj->MsgType;
 	$time = time();
 
-	$instructions="使用说明: \n1.发送 \"n\"获取最新校园通告\n2.发送\"校车(+all)\"查询最近的校车或所有时刻表\n3.发送\"校历\"查询交大校历\n4.发送\"t 关键词\"查询twitter\n5.待续\n";
+	$instructions="分享自己地点，即可查询附近校园巴士站以及下一班到达时间\n更多小功能: \n1.发送 \"n\"获取最新校园通告\n2.发送\"xc(+all)\"查询最近的校车或所有时刻表\n3.发送\"xl\"查询交大校历\n4.发送\"t 关键词\"查询twitter\n5.发送\"m + 歌曲名\"搜索歌曲\n6.待续\n";
 	switch($msgtype)
 	{
 	case "text": 
