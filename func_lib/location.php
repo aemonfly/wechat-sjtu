@@ -28,7 +28,7 @@ function haversineGreatCircleDistance(
 }
 
 function nearestStation($x, $y, $now) {
-	if(date('N', $now) >= "6")  return "周末没有班车:-(";
+	if(date('N', $now) >= "6")  return "周末没有校车:-(";
 	static $positions = array(
 			"研究生服务中心 " => array(31.03013,121.42846,9,15), # [2] clockwise, [3] counter-clockwise
 			"图书信息楼 " => array(31.02738,121.43274,18,5),
@@ -69,22 +69,22 @@ function nearestStation($x, $y, $now) {
 		$nobus = true;
 
 		# consider counter clockwise
-		foreach ($timetable1 as $k1 => $t) {
-			$arrival = strtotime("+${stop_time_offset_cw} min", strtotime($t1));
+		foreach ($timetable1 as $k1 => $t1) {
+			$arrival = strtotime("+${stop_time_offset_ccw} min", strtotime($t1));
 			if ($arrival > $now) {
 				$Nearest_K_Stop .= $stop."\n(逆)".date('G:i', $arrival)."\n";
 				$nobus = false;
 				break;
 			}
 		}
-		if ($nobus) $Nearest_K_Stop .= "\n(逆)没车了现在\n";
+		if ($nobus) $Nearest_K_Stop .= $stop."\n(逆)没车了现在\n";
 
 		# consider clockwise
 		$nobus = true;
 		foreach ($timetable2 as $k2 => $t2) {
-			$arrival = strtotime("+${stop_time_offset_ccw} min", strtotime($t2));
+			$arrival = strtotime("+${stop_time_offset_cw} min", strtotime($t2));
 			if ($arrival > $now) {
-				$Nearest_K_Stop .= $stop."\n(顺)".date('G:i', $arrival)."\n";
+				$Nearest_K_Stop .= "\n(顺)".date('G:i', $arrival)."\n";
 				$nobus = false;
 				break;
 			}
