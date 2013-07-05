@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("Asia/Shanghai");
 require("/home/lx/public_html/func_lib/twitter_Search.php");
 require("/home/lx/public_html/func_lib/get_notice.php");
 require("/home/lx/public_html/func_lib/get_music.php");
@@ -96,36 +96,6 @@ if ($msg) {
 			$returnmsg = sprintf(img_template($user,$server,$time), $title, 
 				$description, $imageurl, $clickurl);
 			break;
-		case "m":
-			$keyword=urldecode($keyword);
-			$keyword=str_replace(" ","%2B", $keyword);
-			$geturl="http://iopenapi.duapp.com/search.php?key=".$keyword;
-			$html=file_get_contents($geturl);
-			$j=json_decode($html);
-
-			$music_title=$j->title;
-			$music_author=$j->author;
-			$music_url=$j->url;
-
-			if($music_url==null) {
-				$returnmsg = sprintf(txt_template($user,$server,$time),"无法找到音乐");
-			}
-			else{
-				$returnmsg="<xml>
-					<ToUserName><![CDATA[$user]]></ToUserName>
-					<FromUserName><![CDATA[$server]]></FromUserName>
-					<CreateTime>$time</CreateTime>
-					<MsgType><![CDATA[music]]></MsgType>
-					<Music>
-					<Title><![CDATA[$music_title]]></Title>
-					<Description><![CDATA[$music_author]]></Description>
-					<MusicUrl><![CDATA[$music_url]]></MusicUrl>
-					<HQMusicUrl><![CDATA[$music_url]]></HQMusicUrl>
-					</Music>
-					<FuncFlag>0</FuncFlag>
-					</xml>";
-			}
-			break;//music
 		case "xc": 
 			$keyword=urldecode($keyword);
 			if ($keyword == "map") { // return image
@@ -161,9 +131,7 @@ if ($msg) {
 	case "location":
 		$loc_x = floatval($post_obj->Location_X);
 		$loc_y = floatval($post_obj->Location_Y);
-		$d26_x = 31.029505; $d26_y = 121.429849;
-		$dis = haversineGreatCircleDistance($loc_x,$loc_y,$d26_x,$d26_y);
-		$tmp = nearestStation($loc_x, $loc_y,get_bus_for_location($time));
+		$tmp = nearestStation($loc_x, $loc_y, strtotime('now'));
 		$returnmsg = sprintf(txt_template($user,$server,$time), $tmp);
 		break;
 
