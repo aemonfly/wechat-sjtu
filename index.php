@@ -1,11 +1,10 @@
 <?php
-date_default_timezone_set("Asia/Shanghai");
 require("/home/lx/public_html/func_lib/twitter_Search.php");
 require("/home/lx/public_html/func_lib/get_notice.php");
 require("/home/lx/public_html/func_lib/get_music.php");
 require("/home/lx/public_html/func_lib/get_bus.php");
 require("/home/lx/public_html/func_lib/location.php");
-
+require("/home/lx/public_html/func_lib/get_zhihudaily.php");
 function img_template($user,$server,$time) {
 	return "<xml>
 			<ToUserName><![CDATA[$user]]></ToUserName>
@@ -41,7 +40,8 @@ function checkSignature()
 	$signature = $_GET["signature"]; 
 	$timestamp = $_GET["timestamp"]; 
 	$nonce = $_GET["nonce"]; 
-	$token ='hjj'; 
+	$token ='hjj';
+
 	$tmpArr = array($token, $timestamp, $nonce); 
 	sort($tmpArr); 
 	$tmpStr = implode( $tmpArr ); 
@@ -119,6 +119,18 @@ if ($msg) {
 				$tmp=get_bus("all");
 			}
 			$returnmsg = sprintf(txt_template($user,$server,$time), $tmp);
+			break;
+		case "zd":
+			/*$title="知乎日报";
+			$description="HAHA";
+			$imageurl="http://edfward.com/~lx/static/xl.jpg";
+			#$clickurl="http://daily.zhihu.com/story/1180";
+			$clickurl="http://edfward.com/~lx/static/zhihu_daily.html";
+			$returnmsg = sprintf(img_template($user,$server,$time), $title, 
+				$description, $imageurl, $clickurl);
+			*/
+			
+			$returnmsg=get_zhihudaily($user,$server,$time,$keyword);
 			break;
 		case "to complete": break;
 		default:
