@@ -1,8 +1,9 @@
 <?php
 
-require_once("sphinxapi.php");
+require_once("/usr/local/coreseek/api/sphinxapi.php");
 
 function get_zhihudaily($user,$server,$time,$date){
+	$Description = "请支持知乎日报;-)";
 	if($date!=''){
 		$webcode=json_decode(file_get_contents('http://news.at.zhihu.com/api/1.2/news/before/'.$date), 1);
 	}
@@ -24,7 +25,6 @@ function get_zhihudaily($user,$server,$time,$date){
 			$title=$webcode['news'][$i]['title'];
 			$url=$webcode['news'][$i]['share_url'];
 			$picurl=$webcode['news'][$i]['image'];
-			$Description="test";
 			$rtmsg.="<item>
 				<Title><![CDATA[$title]]></Title> 
 				<Description><![CDATA[$Description]]></Description>
@@ -49,7 +49,6 @@ function get_zhihudaily($user,$server,$time,$date){
 			$title=$webcode['news'][$i]['title'];
 			$url=$webcode['news'][$i]['share_url'];
 			$picurl=$webcode['news'][$i]['image'];
-			$Description="test";
 			$rtmsg.="<item>
 				<Title><![CDATA[$title]]></Title> 
 				<Description><![CDATA[$Description]]></Description>
@@ -65,27 +64,28 @@ function get_zhihudaily($user,$server,$time,$date){
 }
 
 function search_zhihudaily($user,$server,$time,$keyword) {
+	$Description = "请支持知乎日报;-)";
 	$cl = new SphinxClient();
 	$cl->SetServer('localhost', 9312);
 	$cl->SetConnectTimeout(3);
-	$cl->SetLimits(0, 10);
+	$cl->SetLimits(0, 5);
 	$cl->SetMaxQueryTime(2000);
 	$cl->SetArrayResult(true);
-	$cl->SetMatchMode(SPH_MATCH_EXTENDED);
+	$cl->SetMatchMode(SPH_MATCH_ALL);
 	$cl->SetRankingMode(SPH_RANK_PROXIMITY_BM25);
 	$cl->SetSortMode(SPH_SORT_EXTENDED, '@relevance desc, @weight desc');
 
 	$query_res = $cl->Query($keyword, "zhihu");
-	if ($query_res['total'] == 0) {
+	if (empty($query_res) || !isset($query_res['matches'])) {
 		return "0";
 	}
-	$Description="test";
+	$length = count($query_res['matches']);
 	$rtmsg="<xml>
 		<ToUserName><![CDATA[$user]]></ToUserName>
 		<FromUserName><![CDATA[$server]]></FromUserName>
 		<CreateTime>$time</CreateTime>
 		<MsgType><![CDATA[news]]></MsgType>
-		<ArticleCount>{$query_res['total']}</ArticleCount>
+		<ArticleCount>$length</ArticleCount>
 		<Articles>";
 	$dailyzhihu_url = "http://daily.zhihu.com/story/";
 
@@ -94,7 +94,6 @@ function search_zhihudaily($user,$server,$time,$keyword) {
 			$title=$v['attrs']['a_title'];
 			$url=$dailyzhihu_url.$v['attrs']['a_id'];
 			$picurl=$v['attrs']['img_url'];
-			$Description="test";
 			$rtmsg.="<item>
 				<Title><![CDATA[$title]]></Title>
 				<Description><![CDATA[$Description]]></Description>

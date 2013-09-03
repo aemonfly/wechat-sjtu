@@ -122,7 +122,7 @@ if ($msg) {
 			break;
 		case "zd":
 			$failmsg = sprintf(txt_template($user,$server,$time), "查找无结果");
-			$zd_res = get_zhihudaily($user,$server,$time,$keyword);
+			$zd_res = search_zhihudaily($user,$server,$time,$arr[1]);
 			$returnmsg = ($zd_res != "0" ? $zd_res : $failmsg);
 			break;
 		case "to complete": break;
