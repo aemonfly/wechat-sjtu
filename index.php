@@ -121,16 +121,9 @@ if ($msg) {
 			$returnmsg = sprintf(txt_template($user,$server,$time), $tmp);
 			break;
 		case "zd":
-			/*$title="知乎日报";
-			$description="HAHA";
-			$imageurl="http://edfward.com/~lx/static/xl.jpg";
-			#$clickurl="http://daily.zhihu.com/story/1180";
-			$clickurl="http://edfward.com/~lx/static/zhihu_daily.html";
-			$returnmsg = sprintf(img_template($user,$server,$time), $title, 
-				$description, $imageurl, $clickurl);
-			*/
-			
-			$returnmsg=get_zhihudaily($user,$server,$time,$keyword);
+			$failmsg = sprintf(txt_template($user,$server,$time), "查找无结果");
+			$zd_res = get_zhihudaily($user,$server,$time,$keyword);
+			$returnmsg = ($zd_res != "0" ? $zd_res : $failmsg);
 			break;
 		case "to complete": break;
 		default:
