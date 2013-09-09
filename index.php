@@ -79,11 +79,13 @@ if ($msg) {
 		$keyword=strtolower($keyword);
 
 		switch($target){
+		/*
 		case "t": // twitter msg
 			$s=twitter_Search($keyword,6);
 			if($s==null) {$err="无法找到您要搜索的内容";}
 			$returnmsg = sprintf(txt_template($user,$server,$time), $s.$err);
 			break;
+		*/
 		case "n": 
 			$tmp=get_notice(6); 
 			$returnmsg = sprintf(txt_template($user,$server,$time),$tmp);

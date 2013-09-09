@@ -1,4 +1,9 @@
 <?php
+/********
+IMPORTANT: since twitter's new api requires some form of authentication
+           this functionality has to be abandoned
+*********/
+
 function twitter_Search($keyword,$NumOfTweets)
 {
 
