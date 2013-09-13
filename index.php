@@ -127,6 +127,13 @@ if ($msg) {
 			$zd_res = search_zhihudaily($user,$server,$time,$arr[1]);
 			$returnmsg = ($zd_res != "0" ? $zd_res : $failmsg);
 			break;
+		/*
+		case "rep":
+			$failmsg = sprintf(txt_template($user,$server,$time), "查找无结果");
+			$rep_res = search_report($user,$server,$time,$arr[1]);
+			$returnmsg = ($rep_res != "0" ? $rep_res : $failmsg);
+			break;
+		*/
 		case "to complete": break;
 		default:
 			$returnmsg = sprintf(txt_template($user,$server,$time), $instructions);

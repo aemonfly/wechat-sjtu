@@ -107,4 +107,40 @@ function search_zhihudaily($user,$server,$time,$keyword) {
 		</xml>";
 	return $rtmsg;
 }
+/*
+function search_report($user,$server,$time,$keyword) {
+	$Description = "Problem report";
+	$cl = new SphinxClient();
+	$cl->SetServer('localhost', 9312);
+	$cl->SetConnectTimeout(3);
+	$cl->SetLimits(0, 5);
+	$cl->SetMaxQueryTime(2000);
+	$cl->SetArrayResult(true);
+	$cl->SetMatchMode(SPH_MATCH_ALL);
+	$cl->SetRankingMode(SPH_RANK_PROXIMITY_BM25);
+	$cl->SetSortMode(SPH_SORT_EXTENDED, '@relevance desc, @weight desc');
+	$text = "";
+
+	$query_res = $cl->Query($keyword, "reports");
+	if (empty($query_res) || !isset($query_res['matches'])) {
+		return "0";
+	}
+	$cnt = 1;
+	if (!empty($query_res)) {
+	    foreach ($query_res['matches'] as $v) {
+			$text .= "$cnt.\n".$v['attrs']['description']."\n";
+			$cnt++;
+	    }
+	}
+	return "<xml>
+			<ToUserName><![CDATA[$user]]></ToUserName>
+			<FromUserName><![CDATA[$server]]></FromUserName>
+			<CreateTime>$time</CreateTime>
+			<MsgType><![CDATA[text]]></MsgType>
+			<Content><![CDATA[$text]]></Content>
+			<FuncFlag>0</FuncFlag>
+			</xml>";
+}
+*/
+
 ?>
