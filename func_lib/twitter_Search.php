@@ -1,7 +1,7 @@
 <?php
 /********
 IMPORTANT: since twitter's new api requires some form of authentication
-           this functionality has to be abandoned
+           this functionality has to be deprecated
 *********/
 
 function twitter_Search($keyword,$NumOfTweets)
