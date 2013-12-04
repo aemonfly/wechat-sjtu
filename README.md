@@ -1,6 +1,6 @@
 #SJTU-BARD
 
-SJTU-BARD WeChat(Î¢ÐÅ) official account has following features:
+SJTU-BARD WeChat(å¾®ä¿¡) official account has following features:
 
 - Query on schoold bus (loc, timetable, route, etc.)
 - Query on Zhihu Daily, supporting full-text search
