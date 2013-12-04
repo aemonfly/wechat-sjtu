@@ -63,7 +63,7 @@ if ($msg) {
 	$msgtype=$post_obj->MsgType;
 	$time = time();
 
-	$instructions="分享自己地点，即可查询附近校园巴士站以及下一班到达时间\n更多小功能: \n1.发送\"xc(+all)\"查询最近的校车或所有时刻表\n2.发送\"xl\"查询交大校历\n";
+	$instructions="分享自己地点，即可查询附近校园巴士站以及下一班到达时间\n更多小功能: \n1.发送\"xc(+all)\"查询最近的校车或所有时刻表\n2.发送\"xl\"查询交大校历\n3.发送\"zd keyword\"全文检索知乎日报内容";
 	switch($msgtype)
 	{
 	case "text": 
