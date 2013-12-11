@@ -1,9 +1,10 @@
 <?php
-require("/home/lx/public_html/func_lib/twitter_Search.php");
+# require("/home/lx/public_html/func_lib/twitter_Search.php");
 require("/home/lx/public_html/func_lib/get_notice.php");
 require("/home/lx/public_html/func_lib/get_bus.php");
 require("/home/lx/public_html/func_lib/location.php");
 require("/home/lx/public_html/func_lib/get_zhihudaily.php");
+require("/home/lx/public_html/func_lib/get_face.php");
 function img_template($user,$server,$time) {
 	return "<xml>
 			<ToUserName><![CDATA[$user]]></ToUserName>
@@ -124,15 +125,13 @@ if ($msg) {
 			$returnmsg = ($zd_res != "0" ? $zd_res : $failmsg);
 			break;
 		case "face":
-			if ($keyword==null || !is_numeric($keyword)) break;
-			$title="Face: ".$arr[1];
-			$description="";
-			$imageurl="http://adapt.seiee.sjtu.edu.cn/~ed/faces/".$arr[1].".jpg";
-			$clickurl="http://adapt.seiee.sjtu.edu.cn/~ed/faces/".$arr[1].".jpg";
-			$returnmsg = sprintf(img_template($user,$server,$time), $title, 
-				$description, $imageurl, $clickurl);
-			// $failmsg = sprintf(txt_template($user,$server,$time), "查找无结果");
-			// $returnmsg = ($rep_res != "0" ? $rep_res : $failmsg);
+			if ($keyword==null) {
+				$returnmsg = sprintf(txt_template($user,$server,$time), "请输入参数");
+				break;
+			}
+			$failmsg = sprintf(txt_template($user,$server,$time), "查找无结果");
+			$face_res = get_face($user, $server, $time, $keyword);
+			$returnmsg = ($face_res != "0" ? $face_res : $failmsg);
 			break;
 		default:
 			$returnmsg = sprintf(txt_template($user,$server,$time), $instructions);
