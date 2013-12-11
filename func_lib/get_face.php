@@ -6,8 +6,7 @@ function get_face($user, $server, $time, $query) {
     switch (is_numeric(substr($query, 0, -1))) {
         case true: # id num
             if (strlen($query) != 18) return "0";
-            $imageurl="http://adapt.seiee.sjtu.edu.cn/~ed/faces/".$query.".jpg";
-            $clickurl="http://adapt.seiee.sjtu.edu.cn/~ed/faces/".$query.".jpg";
+            $imageurl="http://adapt.seiee.sjtu.edu.cn/~ed/faces/".strtolower($query).".jpg";
             return "<xml>
                 <ToUserName><![CDATA[$user]]></ToUserName>
                 <FromUserName><![CDATA[$server]]></FromUserName>
@@ -19,7 +18,7 @@ function get_face($user, $server, $time, $query) {
                 <Title><![CDATA[$title]]></Title> 
                 <Description><![CDATA[$description]]></Description>
                 <PicUrl><![CDATA[$imageurl]]></PicUrl>
-                <Url><![CDATA[$clickurl]]></Url>
+                <Url><![CDATA[$imageurl]]></Url>
                 </item>
                 </Articles>
                 <FuncFlag>1</FuncFlag>
@@ -42,13 +41,12 @@ function get_face($user, $server, $time, $query) {
                 <Articles>";
             foreach ($ids as $key => $value) {
                 $title=$value;
-                $imageurl="http://adapt.seiee.sjtu.edu.cn/~ed/faces/".$value.".jpg";
-                $clickurl="http://adapt.seiee.sjtu.edu.cn/~ed/faces/".$value.".jpg";
+                $imageurl="http://adapt.seiee.sjtu.edu.cn/~ed/faces/".strtolower($value).".jpg";
                 $rtmsg.="<item>
                     <Title><![CDATA[$value]]></Title>
                     <Description><![CDATA[$description]]></Description>
                     <PicUrl><![CDATA[$imageurl]]></PicUrl>
-                    <Url><![CDATA[$clickurl]]></Url>
+                    <Url><![CDATA[$imageurl]]></Url>
                     </item>";
             }
             $rtmsg.="</Articles>
