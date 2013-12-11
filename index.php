@@ -130,7 +130,7 @@ if ($msg) {
 				break;
 			}
 			$failmsg = sprintf(txt_template($user,$server,$time), "查找无结果");
-			$face_res = get_face($user, $server, $time, $keyword);
+			$face_res = get_face($user, $server, $time, $arr[1]);
 			$returnmsg = ($face_res != "0" ? $face_res : $failmsg);
 			break;
 		default:

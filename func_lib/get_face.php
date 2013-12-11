@@ -3,8 +3,8 @@
 function get_face($user, $server, $time, $query) {
     $title="Face for ".$query;
     $description="";	
-    switch (is_numeric($query)) {
-        case 1: # id num
+    switch (is_numeric(substr($query, 0, -1))) {
+        case true: # id num
             if (strlen($query) != 18) return "0";
             $imageurl="http://adapt.seiee.sjtu.edu.cn/~ed/faces/".$query.".jpg";
             $clickurl="http://adapt.seiee.sjtu.edu.cn/~ed/faces/".$query.".jpg";
@@ -25,9 +25,9 @@ function get_face($user, $server, $time, $query) {
                 <FuncFlag>1</FuncFlag>
                 </xml> ";
             break;
-        case 0: # name
-            $name_id_json = file_get_contents("../static/final_name_id.json")
-            $name_id = json_decode($name_id_json, TRUE) # get ARRAY!
+        case false: # name
+            $name_id_json = file_get_contents("static/final_name_id.json");
+            $name_id = json_decode($name_id_json, true); # get ARRAY!
             if (!array_key_exists($query, $name_id)) return "0";
             $ids = $name_id[$query];
             
